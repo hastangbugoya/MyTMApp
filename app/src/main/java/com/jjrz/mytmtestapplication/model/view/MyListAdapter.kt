@@ -13,7 +13,7 @@ class MyListAdapter : RecyclerView.Adapter<MyListAdapter.ListViewHolder>() {
     fun updateList(f: MutableList<Summary>) {
         myDisplayList = f
         notifyDataSetChanged()
-        LogKitty("adapted list updated")
+        LogKitty("adapter list updated")
     }
 
     inner class ListViewHolder(binding: ListItemBinding) :

@@ -22,15 +22,15 @@ class MainActivity : AppCompatActivity() {
 
         myVM.getPostsData()
         myVM.getUserData()
-        myVM.userList.observe(this) {
-            LogKitty("users change detected")
-            if (myVM.postsList.value != null) {
+        myVM.PostsComplete.observe(this) {
+            LogKitty("posts change detected")
+            if (myVM.UsersComplete.value ?: false) {
                 myVM.consolidateLists()
             }
         }
-        myVM.postsList.observe(this) {
-            LogKitty("posts change detected")
-            if (myVM.userList.value != null) {
+        myVM.UsersComplete.observe(this) {
+            LogKitty("users change detected")
+            if (myVM.PostsComplete.value ?: false) {
                 myVM.consolidateLists()
             }
         }

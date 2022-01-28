@@ -18,6 +18,8 @@ class MyVM : ViewModel() {
     var userList = MutableLiveData<Users?>().apply { value = Users() }
     var postsList = MutableLiveData<Posts?>().apply { value = Posts() }
     var summaryList = MutableLiveData<MutableList<Summary>>()
+    var UsersComplete = MutableLiveData<Boolean>().apply { value = false }
+    var PostsComplete = MutableLiveData<Boolean>().apply { value = false }
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://jsonplaceholder.typicode.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -34,10 +36,10 @@ class MyVM : ViewModel() {
                     LogKitty("Assigning value to userList")
                     LogKitty("Users : " + response.body()?.size.toString())
                     response.body()?.forEach {
-                        temp.add(it)
-                        LogKitty(it.toString())
+                        userList.value?.add(it)
+//                        LogKitty(it.toString())
                     }
-                    userList.value = temp
+                    UsersComplete.value = true
                     LogKitty("userList : " + userList.value?.size)
                 }
             }
@@ -59,10 +61,9 @@ class MyVM : ViewModel() {
                     LogKitty("Assigning value to postsList")
 //                    LogKitty("Posts : " + response.body()?.size.toString())
                     response.body()?.forEach {
-                        temp.add(it)
+                        postsList.value?.add(it)
                     }
-                    postsList.value = temp
-//                    postsList.postValue(response.body())
+                    PostsComplete.value = true
                     LogKitty("postsList : " + postsList.value?.size)
                 }
             }
@@ -88,7 +89,9 @@ class MyVM : ViewModel() {
                 it.id == usersItem.id
             }
             list?.forEach {
-                summaryList.value?.add(Summary(usersItem.company?.name,it.title,it.body))
+                summaryList.value?.apply {
+                    this.add(Summary(usersItem.company?.name,it.title,it.body))
+                }
             }
         }
         LogKitty("summaryList : " + summaryList.value?.size)
